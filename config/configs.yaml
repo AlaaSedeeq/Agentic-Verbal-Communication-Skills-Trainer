@@ -1,0 +1,29 @@
+llms:
+  # colsed-source:
+  #   openai:
+  opensource:
+    text_llm: "groq" #"huggingface"
+    voice_llm: "groq" #"huggingface"
+    huggingface:
+      text_llm: "mistralai/Mistral-7B-Instruct-v0.3" 
+      voice_llm: "openai/whisper-small"
+    groq:
+      api_key: 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
+      text_llm: llama-3.1-70b-versatile #llama-3.2-90b-text-preview
+      voice_llm: whisper-small
+      # temperature: 0
+
+    # huggingface:
+    #   model_name: llama-3.1-70b-versatile
+    #   temperature: 0
+
+    # google:
+    #   model_name: gemini-1.5-pro
+    #   temperature: 0
+
+# api:
+#   host: "0.0.0.0"
+#   port: 8000
+
+graph:
+  recursion_limit: 50
