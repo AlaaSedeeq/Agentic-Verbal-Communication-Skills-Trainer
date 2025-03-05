@@ -12,28 +12,28 @@ from .chains import (
     )
 
 def story_generate_prompt(state):
-    genre = state["latest_module"].data.genre
+    genre = state["current_module"].data.genre
     story_prompt = story_prompt_chain.invoke({"genre": genre})
-    state["latest_module"].data.story_prompt = story_prompt.content
+    state["current_module"].data.story_prompt = story_prompt.content
     return state
 
 def story_validate(state):
-    user_messages = [m for m in state["messages"] if isinstance(m, HumanMessage)]
+    script = next(msg.content for msg in state["messages"] if isinstance(msg, HumanMessage))
 
     validation = story_validation_chain.invoke({
-        "story": user_messages[-1].content,
-        "genre": state["latest_module"].data.genre
+        "story": script,
+        "genre": state["current_module"].data.genre
     })
-    state["latest_module"].data.user_transcript_validation = validation
+    state["current_module"].data.user_transcript_validation = validation
     return state
 
 def story_followup(state):
-    user_messages = [m for m in state["messages"] if isinstance(m, HumanMessage)]
+    script = next(msg.content for msg in state["messages"] if isinstance(msg, HumanMessage))
 
     response = story_followup_chain.invoke({
-            "invalid_reasons": str(state['latest_module'].data.user_transcript_validation),
-            "genre": state['latest_module'].data.genre,
-            "story": user_messages[-1].content
+            "invalid_reasons": str(state['current_module'].data.user_transcript_validation),
+            "genre": state['current_module'].data.genre,
+            "story": script
         })
 
     state["messages"].append(response)
@@ -44,22 +44,22 @@ def story_analyze_narrative(state):
     analysis = story_narrative_analyzer.invoke({
         "story": state["messages"][-1].content
     })
-    state["latest_module"].data.user_transcript_evaluation.narrative = analysis
+    state["current_module"].data.user_transcript_evaluation.narrative = analysis
     return state
 
 def story_evaluate_engagement(state):
     evaluation = story_engagement_analyzer.invoke({
         "story": state["messages"][-1].content
     })
-    state["latest_module"].data.user_transcript_evaluation.engagement = evaluation
+    state["current_module"].data.user_transcript_evaluation.engagement = evaluation
     return state
 
 def story_generate_feedback(state):
     feedback = story_feedback_chain.invoke({
-        "narrative": state["latest_module"].data.user_transcript_evaluation.narrative,
-        "engagement": state["latest_module"].data.user_transcript_evaluation.engagement
+        "narrative": state["current_module"].data.user_transcript_evaluation.narrative,
+        "engagement": state["current_module"].data.user_transcript_evaluation.engagement
     })
-    state["latest_module"].data.user_transcript_evaluation.feedback = feedback.content
+    state["current_module"].data.user_transcript_evaluation.feedback = feedback.content
     return state
 
 def session_update_tracker(state, config):
@@ -70,7 +70,7 @@ def session_update_tracker(state, config):
     tracker = SessionTracker()
 
     user_id = config["configurable"]["user_id"]
-    module = state["latest_module"]
+    module = state["current_module"]
     start_time = datetime.fromisoformat(module.start_time) if isinstance(module.start_time, str) else module.start_time
     module_time = (start_time - datetime.now()).total_seconds()
     module_time_formatted = str(time.strftime("%H%M%S", time.gmtime(module_time)))
@@ -84,7 +84,7 @@ def session_update_tracker(state, config):
         }
     )
 
-    state["training_sessions"].append(state["latest_module"])
+    state["sessions"].append(state["current_module"])
 
     return state
     # print(f"Session saved to: {saved_path}")

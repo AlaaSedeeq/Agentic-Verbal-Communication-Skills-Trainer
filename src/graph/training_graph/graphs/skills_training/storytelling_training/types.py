@@ -36,7 +36,10 @@ class StoryEvaluation(BaseModel):
     feedback: str
 
 class StoryData(BaseModel):
-    genre: Literal["personal", "fictional", "historical"]
+    genre: Literal[
+        "Personal Growth", "Adventure", "Cultural Experience", 
+        "Professional Journey", "Overcoming Challenges"
+        ]
     story_prompt: str
     user_transcript_validation: StoryValidationResponse
     user_transcript_evaluation: StoryEvaluation

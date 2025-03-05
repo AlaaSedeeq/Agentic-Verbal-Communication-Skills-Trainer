@@ -1,6 +1,10 @@
 from pydantic import BaseModel, Field
 from typing import List, Literal
 
+from src.common.config import load_config
+
+CONFIG = load_config().app.graphs.skills_training.topic_categories
+
 class ImpromptuValidationResponse(BaseModel):
     is_valid: bool = Field(
         ...,

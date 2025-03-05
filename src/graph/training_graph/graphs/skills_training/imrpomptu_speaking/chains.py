@@ -4,7 +4,7 @@ from langchain_groq import ChatGroq
 from langchain_core.prompts import PromptTemplate
 
 from src.graph.utils import create_chain
-from src.types.impromptu_types import (
+from .types import (
     ImpromptuValidationResponse, 
     ImpromptuStructureEvaluationResponse, 
     ImpromptuFluencyEvaluationResponse

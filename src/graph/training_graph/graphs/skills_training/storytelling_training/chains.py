@@ -4,7 +4,7 @@ from langchain_groq import ChatGroq
 from langchain_core.prompts import PromptTemplate
 
 from src.graph.utils import create_chain
-from src.types.storytelling_types import (
+from .types import (
     StoryValidationResponse,
     StoryNarrativeEvaluation,
     StoryEngagementEvaluation

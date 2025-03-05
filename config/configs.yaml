@@ -1,3 +1,27 @@
+app:
+  graphs:
+    skills_training:
+      topic_categories:
+        impromptu_categories:
+          - Ethics and Philosophy
+          - Social Issues
+          - Technology and Innovation
+          - Leadership and Teamwork
+          - Personal Development
+          - General Knowledge
+        story_categories:
+          - Personal Growth
+          - Adventure
+          - Cultural Experience
+          - Professional Journey
+          - Overcoming Challenges
+        conflict_categories:
+          - Workplace/Professional
+          - Family Dynamics
+          - Community/Social
+          - Personal Relationships
+          - Educational/Academic
+
 llms:
   # colsed-source:
   #   openai:
