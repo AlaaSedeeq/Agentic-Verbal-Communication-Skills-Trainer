@@ -55,7 +55,7 @@ def get_llms(text_llm_config: dict = None, voice_llm_config: dict = None):
             # text_model = huggingface_model(model_name=text_model_name, **text_llm_config)
         if CONFIG.llms.opensource.voice_llm == "groq":
             voice_model_name = CONFIG.llms.opensource.groq.voice_llm
-            voice_model = ChatGroq(model_name=text_model_name, **text_llm_config)
+            voice_model = ChatGroq(model_name=voice_model_name, **text_llm_config)
 
         else:
             voice_model_name = CONFIG.llms.opensource.huggingface.voice_llm

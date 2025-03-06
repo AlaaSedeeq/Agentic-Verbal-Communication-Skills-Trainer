@@ -73,7 +73,7 @@ install-dev: setup
 # ==============================================================================
 # Running Applications
 # ==============================================================================
-.PHONY: run_chatbot_api
+.PHONY: run_app
 run_chatbot_api: setup configure-pythonpath
 	@echo "Starting chatbot API..."
 	export PYTHONPATH=$(PYTHONPATH) && $(STREAMLIT_EXEC) $(CHATBOT_PATH)
