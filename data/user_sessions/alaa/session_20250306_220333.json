@@ -1,0 +1,41 @@
+{
+  "user_id": "alaa",
+  "timestamp": "2025-03-06T22:03:33.527500",
+  "module_state": {
+    "name": "impromptu",
+    "data": {
+      "topic": "Ethics and Philosophy",
+      "topic_title": "\"Resolving Moral Dilemmas in Social Media Influencer Ethics\"",
+      "user_input": "Topic type: Ethics and Philosophy",
+      "user_transcript_validation": {
+        "is_valid": true,
+        "invalid_reasons": [],
+        "followup_message": "Your speech meets the requirements."
+      },
+      "user_transcript_evaluation": {
+        "structure": {
+          "score": 8,
+          "has_intro": true,
+          "has_conclusion": false,
+          "organization": "adequate",
+          "key_strength": "Clear thesis statement",
+          "to_improve": "Stronger conclusion needed"
+        },
+        "fluency": {
+          "filler_words": 7,
+          "clarity": "clear",
+          "fluency_score": 9
+        },
+        "feedback": "Here's a motivating feedback based on the evaluation results:\n\nYou've got a super clear thesis statement that really grabs the reader's attention, which is a huge strength. To take it to the next level, let's work on crafting a stronger conclusion that wraps up the main points nicely. Here's a practical exercise to try: write a paragraph summarizing the main ideas in your essay and ending with a thought-provoking statement that leaves the reader with something to think about."
+      }
+    },
+    "attempts": 0,
+    "start_time": "2025-03-06T22:02:49.037065",
+    "last_feedback": null
+  },
+  "metadata": {
+    "duration_seconds": "235915",
+    "user_id": "alaa",
+    "thread_id": "alaad5f91029-50b1-45bd-88fb-18cba9d09981"
+  }
+}

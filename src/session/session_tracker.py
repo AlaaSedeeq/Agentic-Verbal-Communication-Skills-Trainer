@@ -6,8 +6,8 @@ from typing import Union
 from src.graph.state import TrainingModuleState, AssessmentModuleState
 
 class SessionTracker:
-    def __init__(self, base_dir: str = "user_sessions"):
-        self.base_dir = Path(base_dir)
+    def __init__(self, base_dir: str = ""):
+        self.base_dir = Path(base_dir) if base_dir else Path("data").joinpath("user_sessions")
         self.base_dir.mkdir(exist_ok=True)
 
     def _get_user_dir(self, user_id: str) -> Path:

@@ -1,79 +1,8 @@
 import gradio as gr
-import json
-import os
 from datetime import datetime
-import uuid
-import sqlite3
 
 from src.common.config import load_config
-
-
-# Database Management
-class DatabaseManager:
-    def __init__(self, db_path='user_progress.db'):
-        self.db_path = db_path
-        self.init_database()
-
-    def init_database(self):
-        with sqlite3.connect(self.db_path) as conn:
-            cursor = conn.cursor()
-            # Create users table
-            cursor.execute('''
-                CREATE TABLE IF NOT EXISTS users (
-                    username TEXT PRIMARY KEY,
-                    password TEXT NOT NULL
-                )
-            ''')
-            # Create progress table
-            cursor.execute('''
-                CREATE TABLE IF NOT EXISTS progress (
-                    user_id TEXT,
-                    module TEXT,
-                    score REAL,
-                    timestamp DATETIME,
-                    FOREIGN KEY(user_id) REFERENCES users(username)
-                )
-            ''')
-            conn.commit()
-
-    def authenticate(self, username, password):
-        with sqlite3.connect(self.db_path) as conn:
-            cursor = conn.cursor()
-            cursor.execute('SELECT * FROM users WHERE username = ? AND password = ?', 
-                           (username, password))
-            return cursor.fetchone() is not None
-
-    def register_user(self, username, password):
-        try:
-            with sqlite3.connect(self.db_path) as conn:
-                cursor = conn.cursor()
-                cursor.execute('INSERT INTO users (username, password) VALUES (?, ?)', 
-                               (username, password))
-                conn.commit()
-            return True
-        except sqlite3.IntegrityError:
-            return False
-
-    def save_progress(self, username, module, score):
-        with sqlite3.connect(self.db_path) as conn:
-            cursor = conn.cursor()
-            cursor.execute('''
-                INSERT INTO progress (user_id, module, score, timestamp) 
-                VALUES (?, ?, ?, ?)
-            ''', (username, module, score, datetime.now()))
-            conn.commit()
-
-    def get_user_progress(self, username):
-        with sqlite3.connect(self.db_path) as conn:
-            cursor = conn.cursor()
-            cursor.execute('''
-                SELECT module, MAX(score) as max_score, timestamp 
-                FROM progress 
-                WHERE user_id = ? 
-                GROUP BY module
-            ''', (username,))
-            return {row[0]: {"max_score": row[1], "timestamp": row[2]} 
-                    for row in cursor.fetchall()}
+from .db_manager import DatabaseManager
 
 # Simulated AI Feedback (to be replaced with actual LLM)
 class AIFeedbackGenerator:
@@ -124,7 +53,7 @@ class CommunicationSkillsTrainer:
         with gr.Blocks(title="Communication Skills Trainer", theme=gr.themes.Soft()) as app:
             # State Management
             current_user = gr.State(value=None)
-            current_module = gr.State(value=None)
+            latest_module = gr.State(value=None)
             current_submodule = gr.State(value=None)
             
             # Login and Registration Section
@@ -232,12 +161,12 @@ class CommunicationSkillsTrainer:
                     return {
                         skill_submodules: gr.Column(visible=True),
                         module_selector: gr.Column(visible=False),
-                        current_module: module
+                        latest_module: module
                     }
                 return {
                     chat_interface: gr.Column(visible=True),
                     presentation_inputs: gr.Column(visible=True),
-                    current_module: module
+                    latest_module: module
                 }
             
             def handle_submodule_selection(submodule):
@@ -315,7 +244,7 @@ class CommunicationSkillsTrainer:
                 handle_module_selection,
                 inputs=[module_choice],
                 outputs=[skill_submodules, module_selector, chat_interface, 
-                         presentation_inputs, current_module]
+                         presentation_inputs, latest_module]
             )
             
             start_training.click(

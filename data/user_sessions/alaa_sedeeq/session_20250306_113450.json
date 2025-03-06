@@ -1,0 +1,38 @@
+{
+  "user_id": "alaa_sedeeq",
+  "timestamp": "2025-03-06T11:34:50.305916",
+  "module_state": {
+    "name": "impromptu",
+    "data": {
+      "topic": "Ethics and Philosophy",
+      "topic_title": "\"Artificially intelligent decision-making systems: Balancing autonomy and accountability in the workplace.\"",
+      "user_transcript_validation": {
+        "is_valid": true,
+        "invalid_reasons": [],
+        "followup_message": "Your speech meets the requirements."
+      },
+      "user_transcript_evaluation": {
+        "structure": {
+          "score": 8,
+          "has_intro": true,
+          "has_conclusion": false,
+          "organization": "chaotic",
+          "key_strength": "Clear thesis statement",
+          "to_improve": "Better transitions needed"
+        },
+        "fluency": {
+          "filler_words": 7,
+          "clarity": "mumbled",
+          "fluency_score": 6
+        },
+        "feedback": "I love the clear thesis statement you've got at the beginning of your paper - it really sets the tone for your argument. \n\nOne area to improve is to work on connecting your ideas more smoothly. Your writing sometimes feels a bit disjointed and jumps around without clear transitions.\n\nTo help you get more cohesive, I'd like you to practice writing a few paragraphs that link together smoothly. Can you try writing a short section that uses transitional phrases to guide the reader through your ideas?"
+      }
+    },
+    "attempts": 0,
+    "start_time": "2025-03-06T11:34:47.713519",
+    "last_feedback": null
+  },
+  "metadata": {
+    "duration_seconds": "235957"
+  }
+}

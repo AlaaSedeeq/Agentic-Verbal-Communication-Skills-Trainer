@@ -1,0 +1,55 @@
+app:
+  graphs:
+    skills_training:
+      topic_categories:
+        impromptu_categories:
+          - Ethics and Philosophy
+          - Social Issues
+          - Technology and Innovation
+          - Leadership and Teamwork
+          - Personal Development
+          - General Knowledge
+        story_categories:
+          - Personal Growth
+          - Adventure
+          - Cultural Experience
+          - Professional Journey
+          - Overcoming Challenges
+        conflict_categories:
+          - Workplace/Professional
+          - Family Dynamics
+          - Community/Social
+          - Personal Relationships
+          - Educational/Academic
+
+llms:
+  # colsed-source:
+  #   openai:
+  llm_use: opensource
+  use_voice: ""
+  opensource:
+    text_llm: "groq" #"huggingface"
+    voice_llm: "groq" #"huggingface"
+    huggingface:
+      text_llm: "mistralai/Mistral-7B-Instruct-v0.3" 
+      voice_llm: "openai/whisper-small"
+    groq:
+      api_key: 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
+      text_llm: llama-3.2-3b-preview #llama-3.1-8b-instant #llama-3.2-90b-text-preview #"llama-3.2-3b-preview" "llama-3.1-8b-instant" "llama-3.3-70b-versatile" "llama3-8b-8192"
+      voice_llm: whisper-large-v3-turbo
+      # temperature: 0
+
+    # huggingface:
+    #   model_name: llama-3.1-70b-versatile
+    #   temperature: 0
+
+    # google:
+    #   model_name: gemini-1.5-pro
+    #   temperature: 0
+
+# api:
+#   host: "0.0.0.0"
+#   port: 8000
+
+graph:
+  recursion_limit: 50
