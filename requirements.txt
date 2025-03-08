@@ -119,3 +119,4 @@ scipy==1.15.2
 torchvision==0.21.0
 json_repair==0.39.1
 backoff==2.2.1
+librosa==0.10.2
