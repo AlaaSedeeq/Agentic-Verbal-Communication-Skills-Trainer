@@ -18,7 +18,7 @@ STREAMLIT_EXEC := $(VENV_BIN)/streamlit run
 # Project directories
 SRC_DIR := src
 DOCS_DIR := docs
-CHATBOT_PATH := $(SRC_DIR)/presentation/streamlit/app.py #$(SRC_DIR)/presentation/gradio/app.py
+CHATBOT_PATH := $(SRC_DIR)/presentation/streamlit/app.py
 
 # Environment configuration
 SHELL := /bin/bash
@@ -47,7 +47,10 @@ configure-pythonpath: $(VENV)/bin/activate
 check-python:
 	@if ! command -v $(PYTHON) > /dev/null; then \
 		echo "Python 3.10 not found. Installing..."; \
-		sudo apt update && sudo apt install -y python3.10 python3.10-venv; \
+		sudo apt-get update && sudo apt-get install -y software-properties-common; \
+		sudo add-apt-repository -y ppa:deadsnakes/ppa; \
+		sudo apt-get update; \
+		sudo apt-get install -y python3.10 python3.10-venv; \
 	fi
 
 $(VENV)/bin/activate:

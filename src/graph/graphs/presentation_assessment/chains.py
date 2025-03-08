@@ -25,8 +25,8 @@ from .prompts import (
     CONTENT_PROMPT
 )
 
-text_llm_1, _ = get_llms(text_llm_config={"temperature": 0.1}, voice_llm_config={})
-text_llm_7, _ = get_llms(text_llm_config={"temperature": 0.7}, voice_llm_config={})
+text_llm_1, _ = get_llms(temperature = 0.1)
+text_llm_7, _ = get_llms(temperature = 0.7)
 
 def create_analyzer(prompt: str, output_model: BaseModel):
     parser = JsonOutputParser(pydantic_object=output_model)

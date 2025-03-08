@@ -13,8 +13,8 @@ from .prompts import (
     conflict_feedback_prompt
 )
 
-text_llm_1, _ = get_llms(text_llm_config={"temperature": 0.1}, voice_llm_config={})
-text_llm_7, _ = get_llms(text_llm_config={"temperature": 0.7}, voice_llm_config={})
+text_llm_1, _ = get_llms(temperature = 0.1)
+text_llm_7, _ = get_llms(temperature = 0.7)
 
 # Scenario Generation Chain
 conflict_scenario_chain = PromptTemplate.from_template(conflict_scenario_prompt) | text_llm_7

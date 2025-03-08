@@ -3,23 +3,31 @@ llms:
   #   openai:
   llm_use: groq
   groq:
-      api_key: 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
-      text_llm: 
-        model_name: llama-3.2-3b-preview #llama-3.1-8b-instant #llama-3.2-90b-text-preview #"llama-3.2-3b-preview" "llama-3.1-8b-instant" "llama-3.3-70b-versatile" "llama3-8b-8192"
+    text_llm: 
+      model: llama-3.2-3b-preview
+      config:
+        # max_tokens: 100
+        temperature: 0.1
+    voice_llm: 
+      model: whisper-large-v3-turbo
+      config:
+  huggingface:
+    text_llm: 
+      model_name: "meta-llama/Llama-3.2-3B" 
+      config:
         quantization_config: 
-          - load_in_4bit=True,  # More efficient than 8-bit with comparable performance
-          - bnb_4bit_quant_type="nf4",  # Optimized 4-bit quantization (recommended for LLMs)
-          - bnb_4bit_use_double_quant=True,  # Nested quantization for better memory efficiency
-          - bnb_4bit_compute_dtype=torch.bfloat16,  # Compute dtype for speed/accuracy balance
-          - llm_int8_threshold=6.0,  # Threshold for outlier detection
-          - llm_int8_skip_modules=["lm_head"],  # Keep final layer in higher precision
+          load_in_4bit: true
+          bnb_4bit_quant_type: "nf4"
+          bnb_4bit_use_double_quant: true
+          bnb_4bit_compute_dtype: torch.bfloat16 
+          llm_int8_threshold: 6.0
+          llm_int8_skip_modules: ["lm_head"]
         max_new_tokens: 100
         temperature: 0.1
-      voice_llm: whisper-large-v3-turbo
-  huggingface:
-    text_llm: "meta-llama/Llama-3.2-3B" 
-    voice_llm: "openai/whisper-small"
-
+    voice_llm: 
+      model_name: "openai/whisper-small"
+      config:
+    
 app:
   graphs:
     skills_training:

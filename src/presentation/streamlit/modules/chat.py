@@ -3,12 +3,13 @@ import os
 from groq import Groq
 import streamlit as st
 import audio_recorder_streamlit as ars
+
+from src.graph.utils import get_llms
+from src.llm.speech_huggingface import WhisperForConditionalGeneration
 from src.common.config import load_config
 
 CONFIG = load_config().llms
-client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
-voice_model_name = CONFIG.opensource.groq.voice_llm if CONFIG.opensource.voice_llm == "groq" \
-                    else CONFIG.opensource.huggingface.voice_llm
+_, transcriber = get_llms()
 
 def get_graph_response():
     # try:
@@ -25,20 +26,32 @@ def get_graph_response():
 
 def transcribe_audio(audio_file_path):
     """Transcribe audio using Groq's Whisper implementation."""
+    if CONFIG.llms.llm_use == "groq":
+        voice_model_name = CONFIG.llms.groq.voice_llm
+        try:
+            with open(audio_file_path, "rb") as file:
+                transcription = transcriber.audio.transcriptions.create(
+                    file=(os.path.basename(audio_file_path), file.read()),
+                    model=voice_model_name,
+                    prompt=(
+                        """The audio is by a programmer discussing programming issues, """
+                        """the programmer mostly uses python and might mention python """
+                        """libraries or reference code in his speech."""
+                    ),  # Fixed missing comma and closing parenthesis
+                    response_format="text",
+                    language="en",
+                )
+            return transcription.text if hasattr(transcription, 'text') else str(transcription)
+        except Exception as e:
+            st.error(f"Transcription error: {str(e)}")
+            return None
     try:
-        with open(audio_file_path, "rb") as file:
-            transcription = client.audio.transcriptions.create(
-                file=(os.path.basename(audio_file_path), file.read()),
-                model=voice_model_name,
-                prompt=(
-                    """The audio is by a programmer discussing programming issues, """
-                    """the programmer mostly uses python and might mention python """
-                    """libraries or reference code in his speech."""
-                ),  # Fixed missing comma and closing parenthesis
-                response_format="text",
-                language="en",
-            )
-        return transcription.text if hasattr(transcription, 'text') else str(transcription)
+        transcription = transcriber.transcribe(
+            audio_file_path,
+            return_timestamps=True,
+            batch_size=2
+        )
+        return str(transcription)
     except Exception as e:
         st.error(f"Transcription error: {str(e)}")
         return None

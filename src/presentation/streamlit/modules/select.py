@@ -12,7 +12,7 @@ def choose_module():
     
     with col1:
         if st.button("🎤 Presentation Assessment", use_container_width=True):
-            print(st.session_state)
+            # print(st.session_state)
             st.session_state.user_choices = {
                 "module": "Presentation Assessment",
                 "skill": "",
@@ -63,12 +63,13 @@ def skills_training_page():
         st.session_state.graph = get_graph(st.session_state.user_choices)
         st.session_state.graph_state = inint_graph_state(st.session_state)
         st.session_state.graph_state = st.session_state.graph.invoke(st.session_state.graph_state, st.session_state.graph_config)
+        topic = st.session_state.graph_state["messages"][-1].content.strip().replace("\"", "")
         st.session_state.chat_history.append(
             {
                 "role": "bot",
-                "content": f""""Let's talk about:\n\n {st.session_state.graph_state["messages"][-1].content}"""
+                "content": f"""Let's talk about:\n\n {topic}"""
                 }
             )
 
-        print("GRAPH STATE: ", st.session_state.graph_state)
+        # print("GRAPH STATE: ", st.session_state.graph_state)
         st.rerun()

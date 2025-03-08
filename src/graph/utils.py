@@ -25,7 +25,7 @@ def create_chain(
     """Create validated chain with error recovery"""
     parser = JsonOutputParser(pydantic_object=pydantic_model)
 
-    if model.llm_type == "huggingface":
+    if model._llm_type == "huggingface":
         parser = JsonOutputParser(pydantic_object=pydantic_model)
         
         # Escape curly braces in the JSON example
@@ -67,23 +67,92 @@ def create_chain(
         ])
 
 
-def get_llms() -> Tuple[LLM, LLM]:
-    if CONFIG.llms.llm_use == "groq": 
+def get_llms(**kargs) -> Tuple[LLM, LLM]:
+    """Get text and voice LLMs based on configuration, with option to override parameters.
+    
+    Args:
+        text_llm_config: Optional dict of parameters to override the text LLM config
+        voice_llm_config: Optional dict of parameters to override the voice LLM config
+        
+    Returns:
+        Tuple of (text_model, voice_model)
+    """
+    if CONFIG.llms.llm_use == "groq":
         # Text LLM
-        text_model_name = CONFIG.llms.opensource.groq.text_llm
-        text_llm_config = CONFIG.llms.opensource.groq.text_llm.config
-        text_model = ChatGroq(model_name=text_model_name, **text_llm_config)
+        base_text_config = CONFIG.llms.groq.text_llm.config
+        # Safely convert to dict only if config exists
+        base_text_params = {}
+        if base_text_config is not None:
+            try:
+                base_text_params = base_text_config.to_dict()
+            except AttributeError:
+                # If to_dict() isn't available but config exists
+                base_text_params = base_text_config
+        
+        # Override with user-provided parameters
+        if kargs is not None:
+            base_text_params.update(kargs)
+
+        # Pass the model name separately and config params as kwargs
+        text_model = ChatGroq(
+            model=CONFIG.llms.groq.text_llm.model,
+            **base_text_params
+        )
+        
         # Voice LLM
-        voice_llm_config = CONFIG.llms.opensource.groq.voice_llm.config
-        voice_model = ChatGroq(**voice_llm_config)
+        base_voice_config = CONFIG.llms.groq.voice_llm.config
+        base_voice_params = {}
+        if base_voice_config is not None:
+            try:
+                base_voice_params = base_voice_config.to_dict()
+            except AttributeError:
+                base_voice_params = base_voice_config
+        
+        # Override with user-provided parameters
+        if kargs is not None:
+            base_voice_params.update(kargs)
+                
+        voice_model = ChatGroq(
+            model=CONFIG.llms.groq.voice_llm.model,
+            **base_voice_params
+        )
     
     elif CONFIG.llms.llm_use == "huggingface":
         # Text LLM
-        text_llm_config = CONFIG.llms.opensource.huggingface.text_llm.config
-        text_model = HuggingFaceLLM(**text_llm_config)
+        base_text_config = CONFIG.llms.huggingface.text_llm.config
+        base_text_params = {}
+        if base_text_config is not None:
+            try:
+                base_text_params = base_text_config.to_dict()
+            except AttributeError:
+                base_text_params = base_text_config
+        
+        # Override with user-provided parameters
+        if kargs is not None:
+            base_text_params.update(kargs)
+                
+        text_model = HuggingFaceLLM(
+            model_name=CONFIG.llms.huggingface.text_llm.model_name,
+            **base_text_params
+        )
+        
         # Voice LLM
-        voice_llm_config = CONFIG.llms.opensource.huggingface.voice_llm.config
-        voice_model = HuggingFaceLLM(model_name=text_model_name, **voice_llm_config)
+        base_voice_config = CONFIG.llms.huggingface.voice_llm.config
+        base_voice_params = {}
+        if base_voice_config is not None:
+            try:
+                base_voice_params = base_voice_config.to_dict()
+            except AttributeError:
+                base_voice_params = base_voice_config
+        
+        # Override with user-provided parameters
+        if kargs is not None:
+            base_voice_params.update(kargs)
+                
+        voice_model = HuggingFaceLLM(
+            model_name=CONFIG.llms.huggingface.voice_llm.model_name,
+            **base_voice_params
+        )
 
     else:
         raise ValueError(f"Invalid LLM use: {CONFIG.llms.llm_use}")

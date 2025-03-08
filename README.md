@@ -65,39 +65,21 @@ This module includes three specialized training programs:
    ```
 
 ### Configuration
-To use the Groq API for faster performance:
+You can use the llm from Groq API for faster performance or from huggingface for local hosting of the llm:
 1. Set the following in `config.yaml`:
    ```yaml
-   llm_use: "opensource"
-   opensource:
-     llm: "groq"
-     text_llm: "llama-3.2-3b-preview"
-     voice_llm: "whisper-large-v3-turbo"
+   llm_use: "grop" or "huggingface"
    ```
-2. Obtain a free API key from [Groq](https://console.groq.com/keys).
-3. Add the API key to your environment:
-   ```bash
-   export GROQ_API_KEY=your_api_key_here
-   ```
-
-To use a locally hosted LLM:
-1. Set the following in `config.yaml`:
-   ```yaml
-   llm_use: "opensource"
-   opensource:
-    text_llm: "huggingface"
-    voice_llm: "huggingface"
-     llm: "NousResearch/Hermes-3-Llama-3.2-3B"
-   ```
-2. Obtain the HuggingFace token key from huggingface.co.
-3. Add the API key to your environment:
+2. Obtain a free HugginFace token from HuggingFace.
+4. Add the HF_TOKEN to your environment:
    ```bash
    export HF_TOKEN=your_api_key_here
    ```
-4. Run the OpenLLM server for smooth llm hosting:
-    ```bash
-    openllm serve llama3.2:1b-instruct-6fa1
-    ```
+5. Obtain a free API key from [Groq](https://console.groq.com/keys).
+6. Add the API key to your environment:
+   ```bash
+   export GROQ_API_KEY=your_api_key_here
+   ```
 ---
 
 ## Usage
