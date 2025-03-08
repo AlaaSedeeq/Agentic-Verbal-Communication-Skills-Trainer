@@ -109,3 +109,13 @@ watchdog==6.0.0
 websockets==15.0
 yarl==1.18.3
 zstandard==0.23.0
+bitsandbytes 
+torch==2.6.0
+transformers==4.48.2
+accelerate==1.3.0
+soundfile==0.13.1
+pillow==11.1.0
+scipy==1.15.2
+torchvision==0.21.0
+json_repair==0.39.1
+backoff==2.2.1

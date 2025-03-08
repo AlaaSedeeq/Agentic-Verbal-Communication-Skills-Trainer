@@ -74,7 +74,7 @@ install-dev: setup
 # Running Applications
 # ==============================================================================
 .PHONY: run_app
-run_chatbot_api: setup configure-pythonpath
+run_app: setup configure-pythonpath
 	@echo "Starting chatbot API..."
 	export PYTHONPATH=$(PYTHONPATH) && $(STREAMLIT_EXEC) $(CHATBOT_PATH)
 
@@ -94,6 +94,6 @@ help:
 	@echo "Available commands:"
 	@echo "  make setup             : Set up development environment"
 	@echo "  make clean             : Clean up generated files"
-	@echo "  make run_chatbot_api   : Run the Chatbot API application"
+	@echo "  make run_app           : Run the streamlit application"
 
 .DEFAULT_GOAL := help

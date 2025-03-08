@@ -1,3 +1,5 @@
+from langchain.llms.base import LLM as LangChainLLM
+
 # from datetime import datetime
 from langchain_core.messages import AIMessage, HumanMessage
 
